@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--Open Liberty documentation does not use schema in examples.-->
-<server description="Jakarta EE example server">
+<server description="Jakarta EE - PASA">
     <featureManager>
         <feature>servlet-4.0</feature>
         <feature>jsonb-1.0</feature>
