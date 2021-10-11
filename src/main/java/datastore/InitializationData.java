@@ -4,6 +4,7 @@ package datastore;
 import ad.service.AdService;
 import ad.service.CategoryService;
 import lombok.SneakyThrows;
+import user.entity.Role;
 import user.entity.User;
 import user.service.UserService;
 
@@ -60,6 +61,7 @@ public class InitializationData {
                 .surname("Administratorowy")
                 .birthDate(LocalDate.of(1999, 10, 10))
                 .password("admin")
+                .role(Role.ADMIN)
                 .email("asdasd@wp.pl")
                 .avatar(getResourceAsByteArray("avatars/admin.jpg")) //package relative path
                 .build();
@@ -70,6 +72,7 @@ public class InitializationData {
                 .surname("Lesnieu")
                 .birthDate(LocalDate.of(1998, 5, 17))
                 .password("admin")
+                .role(Role.ADMIN)
                 .email("uyiouyio@wp.pl")
                 .avatar(getResourceAsByteArray("avatars/creativexvc.jpg"))//package relative path
                 .build();
@@ -80,6 +83,7 @@ public class InitializationData {
                 .surname("Studentowy")
                 .birthDate(LocalDate.of(2000, 2, 26))
                 .password("admin")
+                .role(Role.USER)
                 .email("dfhghdfgh@wp.pl")
                 .avatar(getResourceAsByteArray("avatars/student.jpg"))//package relative path
                 .build();
@@ -88,16 +92,28 @@ public class InitializationData {
                 .login("prowadzoncy")
                 .name("Java EE")
                 .surname("Master")
+                .role(Role.USER)
                 .birthDate(LocalDate.of(1993, 8, 11))
                 .password("admin")
                 .email("zcvzxcvzxcv@wp.pl")
                 .avatar(getResourceAsByteArray("avatars/prowadzoncy.jpg"))//package relative path
                 .build();
 
+        User user4 = User.builder()
+                .login("bezzdjec")
+                .name("Jacek")
+                .surname("Siema")
+                .role(Role.USER)
+                .birthDate(LocalDate.of(1990, 2, 2))
+                .password("admin")
+                .email("zcvzxsdp@sd.pl")
+                .build();
+
         userService.create(user1);
         userService.create(user2);
         userService.create(user3);
         userService.create(admin);
+        userService.create(user4);
 
 //        Category automotive = Category.builder()
 //                .name("Motoryzacja")

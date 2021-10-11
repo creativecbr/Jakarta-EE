@@ -3,6 +3,7 @@ package user.repository;
 import datastore.DataStore;
 import repository.Repository;
 import user.entity.User;
+import utils.CloningUtility;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -51,7 +52,7 @@ public class UserRepository implements Repository<User, String> {
 
     @Override
     public void update(User entity) {
-        throw new UnsupportedOperationException("Not implemented.");
+        store.updateUser(entity);
     }
 
 
@@ -80,4 +81,10 @@ public class UserRepository implements Repository<User, String> {
         throw new UnsupportedOperationException("Not implemented.");
     }
 
+    public void deleteAvatar(User user) {
+        CloningUtility.clone(user);
+        user.setAvatar(null);
+        store.updateUser(user);
+
+    }
 }

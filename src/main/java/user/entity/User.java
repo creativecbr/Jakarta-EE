@@ -52,6 +52,11 @@ public class User implements Serializable {
     private String email;
 
     /**
+     * User's role.
+     */
+    private Role role;
+
+    /**
      * User's list of ads.
      */
     @EqualsAndHashCode.Exclude

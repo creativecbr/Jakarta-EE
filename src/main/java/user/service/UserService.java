@@ -6,8 +6,7 @@ import user.repository.UserRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,6 +73,12 @@ public class UserService {
         repository.delete(repository.find(login).orElseThrow());
     }
 
+    /**
+     * Removes user's avatar by login.
+     *
+     * @param login of user to delete
+     */
+    public void deleteAvatar(String login) { repository.deleteAvatar(repository.find(login).orElseThrow());}
 
     /**
      * Updates existing user.
@@ -87,7 +92,8 @@ public class UserService {
     public void updateAvatar(String login, InputStream is) {
         repository.find(login).ifPresent(user -> {
             try {
-                user.setAvatar(is.readAllBytes());
+                byte[] avatar = is.readAllBytes();
+                user.setAvatar(avatar);
                 repository.update(user);
             } catch (IOException ex) {
                 throw new IllegalStateException(ex);

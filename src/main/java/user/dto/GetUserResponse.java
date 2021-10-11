@@ -1,6 +1,7 @@
 package user.dto;
 
 import lombok.*;
+import user.entity.Role;
 import user.entity.User;
 
 import java.time.LocalDate;
@@ -45,6 +46,11 @@ public class GetUserResponse {
     private String email;
 
     /**
+     * User's role.
+     */
+    private Role role;
+
+    /**
      * @return mapper for convenient converting entity object to dto object
      */
     public static Function<User, GetUserResponse> entityToDtoMapper() {
@@ -54,6 +60,7 @@ public class GetUserResponse {
                 .birthDate(user.getBirthDate())
                 .email(user.getEmail())
                 .login(user.getLogin())
+                .role(user.getRole())
                 .build();
     }
 

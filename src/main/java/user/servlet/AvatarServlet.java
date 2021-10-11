@@ -20,18 +20,165 @@ import java.util.Optional;
 /**
  * Servlet for serving and uploading characters' portraits i raster image format.
  */
-@WebServlet(urlPatterns = AvatarServlet.Paths.AVATARS + "/*")
+@WebServlet(urlPatterns = {AvatarServlet.Paths.AVATARS + "/*"})
 @MultipartConfig(maxFileSize = 200 * 1024)
 public class AvatarServlet extends HttpServlet {
 
     /**
      * Service for managing characters.
      */
-    private UserService service;
+    private final UserService service;
 
     @Inject
     public AvatarServlet(UserService service) {
         this.service = service;
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String path = ServletUtility.parseRequestPath(request);
+        String servletPath = request.getServletPath();
+
+        if (Paths.AVATARS.equals(servletPath)) {
+            if (path.matches(Patterns.AVATAR)) {
+                getAvatar(request, response);
+                return;
+            }
+        }
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String path = ServletUtility.parseRequestPath(request);
+        String servletPath = request.getServletPath();
+
+        if (Paths.AVATARS.equals(servletPath)) {
+            if (path.matches(Patterns.AVATAR)) {
+                putAvatar(request, response);
+                return;
+            }
+        }
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String path = ServletUtility.parseRequestPath(request);
+        String servletPath = request.getServletPath();
+        if (Paths.AVATARS.equals(servletPath)) {
+            if (path.matches(Patterns.AVATAR)) {
+                postAvatar(request, response);
+                return;
+            }
+        }
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String path = ServletUtility.parseRequestPath(request);
+        if (Paths.AVATARS.equals(request.getServletPath())) {
+            if (path.matches(Patterns.AVATAR)) {
+                deleteAvatar(request, response);
+                return;
+            }
+        }
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    /**
+     * Deletes existing avatar denoted by path param.
+     *
+     * @param request  http request
+     * @param response http response
+     * @throws IOException if an input or output exception occurred
+     */
+    private void deleteAvatar(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        String login = ServletUtility.parseRequestPath(request).replaceAll("/", "");
+        Optional<User> user = service.find(login);
+
+        if (user.isPresent()) {
+            service.deleteAvatar(user.get().getLogin());
+            response.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+    /**
+     * @param request  http request
+     * @param response http response
+     * @throws IOException      if any input or output exception occurred
+     * @throws ServletException if this request is not of type multipart/form-data
+     */
+    private void putAvatar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        String login = ServletUtility.parseRequestPath(request).replaceAll("/", "");
+        Optional<User> user = service.find(login);
+
+        if (user.isPresent()) {
+            Part avatar = request.getPart(Parameters.AVATAR);
+            if (avatar != null) {
+                service.updateAvatar(login, avatar.getInputStream());
+            }
+            response.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+    /**
+     * @param request  http request
+     * @param response http response
+     * @throws IOException      if any input or output exception occurred
+     * @throws ServletException if this request is not of type multipart/form-data
+     */
+    private void postAvatar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        String login = ServletUtility.parseRequestPath(request).replaceAll("/", "");
+        Optional<User> user = service.find(login);
+
+        if (user.isPresent()) {
+            if (user.get().getAvatar() == null) {
+                Part avatar = request.getPart(Parameters.AVATAR);
+                if (avatar != null) {
+                    service.updateAvatar(login, avatar.getInputStream());
+                }
+                response.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
+            }
+
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+    /**
+     * @param request  http request
+     * @param response http response
+     * @throws IOException if any input or output exception occurred
+     */
+    private void getAvatar(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        String login = ServletUtility.parseRequestPath(request).replaceAll("/", "");
+        Optional<User> user = service.find(login);
+
+        if (user.isPresent() && user.get().getAvatar() != null) {
+
+            response.addHeader(HttpHeaders.CONTENT_TYPE, MimeTypes.IMAGE_PNG);
+            response.setContentLength(user.get().getAvatar().length);
+            response.getOutputStream().write(user.get().getAvatar());
+
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 
     /**
@@ -56,7 +203,7 @@ public class AvatarServlet extends HttpServlet {
         /**
          * Specified portrait (for download).
          */
-        public static final String AVATAR = "^/[0-9]+/?$";
+        public static final String AVATAR = "^/[A-Z,a-z]+/?$";
 
     }
 
@@ -70,78 +217,6 @@ public class AvatarServlet extends HttpServlet {
          */
         public static final String AVATAR = "avatar";
 
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String path = ServletUtility.parseRequestPath(request);
-        String servletPath = request.getServletPath();
-        if (Paths.AVATARS.equals(servletPath)) {
-            if (path.matches(Patterns.AVATAR)) {
-                getAvatar(request, response);
-                return;
-            }
-        }
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-    }
-
-    @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String path = ServletUtility.parseRequestPath(request);
-        String servletPath = request.getServletPath();
-        if (Paths.AVATARS.equals(servletPath)) {
-            if (path.matches(Patterns.AVATAR)) {
-                putAvatar(request, response);
-                return;
-            }
-        }
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-    }
-
-    /**
-     * Updates character's portrait. Receives portrait bytes from request and stores them in the data storage.
-     *
-     * @param request  http request
-     * @param response http response
-     * @throws IOException      if any input or output exception occurred
-     * @throws ServletException if this request is not of type multipart/form-data
-     */
-    private void putAvatar(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        //Parsed request path is valid with character pattern and can contain starting and ending '/'.
-        String login = ServletUtility.parseRequestPath(request).replaceAll("/", "");
-        Optional<User> user = service.find(login);
-
-        if (user.isPresent()) {
-            Part avatar = request.getPart(Parameters.AVATAR);
-            if (avatar != null) {
-                service.updateAvatar(login, avatar.getInputStream());
-            }
-            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-        } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-        }
-    }
-
-    /**
-     * Fetches portrait as byte array from data storage and sends is through http protocol.
-     *
-     * @param request  http request
-     * @param response http response
-     * @throws IOException if any input or output exception occurred
-     */
-    private void getAvatar(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //Parsed request path is valid with character pattern and can contain starting and ending '/'.
-        String login = ServletUtility.parseRequestPath(request).replaceAll("/", "");
-        Optional<User> user = service.find(login);
-
-        if (user.isPresent()) {
-            //Type should be stored in the database but in this project we assume everything to be png.
-            response.addHeader(HttpHeaders.CONTENT_TYPE, MimeTypes.IMAGE_PNG);
-            response.setContentLength(user.get().getAvatar().length);
-            response.getOutputStream().write(user.get().getAvatar());
-        } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-        }
     }
 
 }

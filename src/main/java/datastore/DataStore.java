@@ -4,6 +4,7 @@ import ad.entity.Ad;
 import ad.entity.Category;
 import lombok.extern.java.Log;
 import user.entity.User;
+import utils.CloningUtility;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.*;
@@ -33,9 +34,9 @@ public class DataStore {
      * Looking for User with specific login.
      *
      * @param login user's login.
-     * @return  container with user(can be empty).
+     * @return container with user(can be empty).
      */
-    public synchronized Optional<User> findUser(String login){
+    public synchronized Optional<User> findUser(String login) {
         return users.stream()
                 .filter(user -> user.getLogin().equals(login))
                 .findFirst();
@@ -45,9 +46,9 @@ public class DataStore {
      * Looking for User with specific email and login.
      *
      * @param email user's email.
-     * @return  container with user(can be empty).
+     * @return container with user(can be empty).
      */
-    public synchronized Optional<User> findUserByLoginOrEmail(String login, String email){
+    public synchronized Optional<User> findUserByLoginOrEmail(String login, String email) {
         var usr = Optional.<User>empty();
         for (User user : users) {
             if (user.getEmail().equals(email) || user.getLogin().equals(login)) {
@@ -61,11 +62,11 @@ public class DataStore {
     /**
      * Looking for User with specific login and password.
      *
-     * @param login user's login.
+     * @param login    user's login.
      * @param password user's login.
-     * @return  container with user(can be empty).
+     * @return container with user(can be empty).
      */
-    public synchronized Optional<User> findUser(String login, String password){
+    public synchronized Optional<User> findUser(String login, String password) {
         return users.stream()
                 .filter(user -> user.getLogin().equals(login))
                 .filter(user -> user.getPassword().equals(password))
@@ -77,16 +78,18 @@ public class DataStore {
      *
      * @return list with all users in DB.
      */
-    public synchronized List<User> findAllUsers(){  return new ArrayList<>(users); }
+    public synchronized List<User> findAllUsers() {
+        return new ArrayList<>(users);
+    }
 
 
     /**
      * Looking for Category with specific name.
      *
      * @param name category name.
-     * @return  container with category(can be empty).
+     * @return container with category(can be empty).
      */
-    public synchronized Optional<Category> findCategory(String name){
+    public synchronized Optional<Category> findCategory(String name) {
         return categories.stream()
                 .filter(category -> category.getName().equals(name))
                 .findFirst();
@@ -97,15 +100,17 @@ public class DataStore {
      *
      * @return list with all categories in DB.
      */
-    public synchronized List<Category> findAllCategories(){  return new ArrayList<>(categories); }
+    public synchronized List<Category> findAllCategories() {
+        return new ArrayList<>(categories);
+    }
 
     /**
      * Looking for Ad with specific Id.
      *
      * @param id ad id.
-     * @return  container with ad(can be empty).
+     * @return container with ad(can be empty).
      */
-    public synchronized Optional<Ad> findAd(Long id){
+    public synchronized Optional<Ad> findAd(Long id) {
         return ads.stream()
                 .filter(ad -> ad.getId().equals(id))
                 .findFirst();
@@ -116,7 +121,9 @@ public class DataStore {
      *
      * @return list with all ads in DB.
      */
-    public synchronized List<Ad> findAllAds(){  return new ArrayList<>(ads); }
+    public synchronized List<Ad> findAllAds() {
+        return new ArrayList<>(ads);
+    }
 
 
     /**
@@ -152,8 +159,8 @@ public class DataStore {
      *
      * @param ad new Ad in store.
      */
-    public void createAd(Ad ad){
-        ad.setId(findAllAds().stream().mapToLong(Ad::getId).max().orElse(0)+1);
+    public void createAd(Ad ad) {
+        ad.setId(findAllAds().stream().mapToLong(Ad::getId).max().orElse(0) + 1);
         ads.add(ad);
     }
 
@@ -203,11 +210,31 @@ public class DataStore {
     }
 
     /**
+     * Updates existing user.
+     *
+     * @param user user to be updated
+     * @throws IllegalArgumentException if user with the same id does not exist
+     */
+    public synchronized void updateUser(User user) throws IllegalArgumentException {
+        findUser(user.getLogin()).ifPresentOrElse(
+                original -> {
+                    users.remove(original);
+                    users.add(CloningUtility.clone(user));
+                },
+                () -> {
+                    throw new IllegalArgumentException(
+                            "The user with login " + user.getLogin() + " does not exist");
+                });
+    }
+
+    /**
      * Geting all ads stream.
      *
      * @return ads stream.
      */
-    public Stream<Ad> getAdsStream() {  return ads.stream(); }
+    public Stream<Ad> getAdsStream() {
+        return ads.stream();
+    }
 
 }
 

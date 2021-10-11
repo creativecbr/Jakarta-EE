@@ -1,6 +1,48 @@
 ###
 
-GET http://localhost:9080/PASA/api/users/1
+GET http://localhost:9080/PASA/api/users/admin
+
+###
+
+GET http://localhost:9080/PASA/api/users
+
+###
+
+POST http://localhost:9080/PASA/api/avatars/bezzdjec
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="avatar"; filename="do_zamiany.jpg'
+
+< ../../src/main/resources/datastore/avatars/do_zamiany.jpg
+--boundary--
+
+###
+
+### to nie pojdzie, bo admin juz ma avatar
+
+POST http://localhost:9080/PASA/api/avatars/admin
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="avatar";
+
+< ../../src/main/resources/datastore/avatars/do_zamiany.jpg
+--boundary--
 
 
 ###
+
+PUT http://localhost:9080/PASA/api/avatars/admin
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="avatar"; filename="admin.jpg'
+
+< ../../src/main/resources/datastore/avatars/do_zamiany.jpg
+--boundary--
+
+
+###
+
+DELETE http://localhost:9080/PASA/api/avatars/admin

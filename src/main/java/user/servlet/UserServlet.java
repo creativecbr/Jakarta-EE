@@ -26,8 +26,7 @@ import java.util.Optional;
 /**
  * Servlet for returning user's name from the active session if present.
  */
-@WebServlet(urlPatterns = {UserServlet.Paths.USERS + "/*"}
-)
+@WebServlet(urlPatterns = {UserServlet.Paths.USERS + "/*"})
 public class UserServlet extends HttpServlet {
 
     /**
@@ -85,12 +84,10 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         String path = ServletUtility.parseRequestPath(request);
         String servletPath = request.getServletPath();
-        System.out.println(request.toString());
-        System.out.println(response.toString());
-        System.out.println("Znalazl sie");
-        System.out.println(servletPath + "\n\n\n" + path);
+
         if (Paths.USERS.equals(servletPath)) {
 
             if (path.matches(Patterns.USER)) {
@@ -147,7 +144,7 @@ public class UserServlet extends HttpServlet {
      * @throws IOException if any input or output exception occurred
      */
     private void getUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //Parsed request path is valid with character pattern and can contain starting and ending '/'.
+
         String login = ServletUtility.parseRequestPath(request).replaceAll("/", "");
         Optional<User> user = service.find(login);
 

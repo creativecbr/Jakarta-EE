@@ -29,5 +29,10 @@ public class Category implements Serializable {
      */
     private String name;
 
+    /**
+     * Description of category.
+      */
+    private String description;
+
 
 }
