@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/template/main.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{adView.id}" required="true"/>
+        <f:viewAction action="#{adView.init()}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:outputStylesheet library="ad" name="css/ad_view.css"/><!-- Automatically relocated to head. -->
+        <h:panelGroup  layout="block">
+<!--        <h:panelGroup rendered="#{userContext.authorized}" layout="block">-->
+            <article class="text--justified">
+                <header><h2><h:outputText value="#{adView.ad.title}"/></h2></header>
+            </article>
+            <div>
+                <div class="ad__description">
+                    Description: <h:outputText value="#{adView.ad.description}"/>
+                </div>
+
+                <div class="ad__category">
+                    Category: <h:outputText value="#{adView.ad.category}"/>
+                </div>
+
+                <div class="ad__author">
+                    Author: <h:outputText value="#{adView.ad.user}"/>
+                </div>
+            </div>
+<!--            <h:commandButton class="ui-control ui-button" value="Back" immediate="true"-->
+<!--                             action="#{adView.backToCategory()}"/>-->
+        </h:panelGroup>
+    </ui:define>
+
+</ui:composition>

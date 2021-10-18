@@ -1,7 +1,7 @@
-package ad.dto;
+package category.dto;
 
 
-import ad.entity.Category;
+import category.entity.Category;
 import lombok.*;
 
 import java.util.function.BiFunction;

@@ -1,0 +1,26 @@
+.ad__grid {
+    display: grid;
+    grid-template-columns: 100px 100px 100px 350px;
+}
+
+.ad__portrait {
+    grid-column: 4;
+    grid-row-start: 1;
+    grid-row-end: 8;
+}
+
+.ad__description {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.ad__category {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.ad__author {
+    grid-column: 1;
+    grid-row: 3;
+}
+

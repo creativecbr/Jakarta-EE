@@ -1,4 +1,4 @@
-package ad.entity;
+package category.entity;
 
 import lombok.*;
 

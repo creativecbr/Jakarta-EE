@@ -1,12 +1,11 @@
-package ad.repository;
+package category.repository;
 
-import ad.entity.Category;
+import category.entity.Category;
 import datastore.DataStore;
 import repository.Repository;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-import javax.naming.OperationNotSupportedException;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +30,11 @@ public class CategoryRepository implements Repository<Category, String> {
 
 
     @Override
-    public Optional<Category> find(String id) {
+    public Optional<Category> find(String name) {
+        return store.findCategory(name);
+    }
+
+    public Optional<Category> findById(Long id) {
         return store.findCategory(id);
     }
 
@@ -47,7 +50,7 @@ public class CategoryRepository implements Repository<Category, String> {
 
     @Override
     public void delete(Category entity) {
-        throw new UnsupportedOperationException("Operation not implemented.");
+        store.deleteCategory(entity.getName());
     }
 
     @Override

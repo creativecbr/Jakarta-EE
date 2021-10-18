@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/template/main.xhtml">
+
+
+
+    <ui:define name="content">
+<!--        <h:panelGroup rendered="#{userContext.authorized}" layout="block">-->
+        <h:panelGroup layout="block">
+            <article class="text--justified">
+                <header><h2>Categories</h2></header>
+                <h:dataTable value="#{categoryList.categories.categories}" var="category" styleClass="data-table">
+                    <h:column>
+                        <f:facet name="header">Name</f:facet>
+                        <h:outputText value="#{category.name}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">View</f:facet>
+                        <h:link outcome="/category/category_view.xhtml" value="view">
+                            <f:param name="id" value="#{category.id}"/>
+                        </h:link>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Remove</f:facet>
+                        <h:form>
+                            <h:commandButton styleClass="ui-button ui-control" value="delete"
+                                             action="#{categoryList.deleteAction(category)}"/>
+                        </h:form>
+                    </h:column>
+                </h:dataTable>
+            </article>
+        </h:panelGroup>
+    </ui:define>
+
+</ui:composition>

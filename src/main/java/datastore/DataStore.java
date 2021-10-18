@@ -1,14 +1,13 @@
 package datastore;
 
 import ad.entity.Ad;
-import ad.entity.Category;
+import category.entity.Category;
 import lombok.extern.java.Log;
 import user.entity.User;
 import utils.CloningUtility;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Log
@@ -96,6 +95,18 @@ public class DataStore {
     }
 
     /**
+     * Looking for Category with specific id.
+     *
+     * @param id category id.
+     * @return container with category(can be empty).
+     */
+    public synchronized Optional<Category> findCategory(Long id) {
+        return categories.stream()
+                .filter(category -> category.getId().equals(id))
+                .findFirst();
+    }
+
+    /**
      * Looking for all categories.
      *
      * @return list with all categories in DB.
@@ -151,7 +162,10 @@ public class DataStore {
                 original -> {
                     throw new IllegalArgumentException("That category already exist.");
                 },
-                () -> categories.add(category));
+                () -> {
+                    category.setId(findAllCategories().stream().mapToLong(Category::getId).max().orElse(0) + 1);
+                    categories.add(category);
+                });
     }
 
     /**
@@ -186,12 +200,22 @@ public class DataStore {
      * @throws IllegalArgumentException if category with specific name doesn't exist.
      */
     public synchronized void deleteCategory(String name) throws IllegalArgumentException {
-        findCategory(name).ifPresentOrElse(
-                original -> categories.remove(original),
-                () -> {
-                    throw new IllegalArgumentException("Category with this name doesn't exist.");
-                }
-        );
+
+        Optional<Category> category = findCategory(name);
+        if (category.isPresent()) {
+
+            ads.removeIf(ad -> ad.getCategory().getName().equals(name));
+            findCategory(name).ifPresentOrElse(
+                    original -> categories.remove(original),
+                    () -> {
+                        throw new IllegalArgumentException("Category with this id doesn't exist.");
+                    }
+            );
+
+        } else {
+            throw new IllegalArgumentException("Category with this name doesn't exist.");
+        }
+
     }
 
     /**
@@ -236,6 +260,23 @@ public class DataStore {
         return ads.stream();
     }
 
+    /**
+     * Updates existing ad.
+     *
+     * @param ad ad to be updated
+     * @throws IllegalArgumentException if ad doesn't exist
+     */
+    public void updateAd(Ad ad) {
+
+        findAd(ad.getId()).ifPresentOrElse(
+                original -> {
+                    ads.remove(original);
+                },
+                () -> {
+                    throw new IllegalArgumentException(
+                            "The ad with id " + ad.getId() + " does not exist");
+                });
+    }
 }
 
 

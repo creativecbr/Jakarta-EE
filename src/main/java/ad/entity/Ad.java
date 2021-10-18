@@ -1,10 +1,10 @@
 package ad.entity;
 
+import category.entity.Category;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import user.entity.User;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -37,7 +37,6 @@ public class Ad implements Serializable {
     /**
      * Advertisement's category.
      */
-
     private Category category;
 
     /**

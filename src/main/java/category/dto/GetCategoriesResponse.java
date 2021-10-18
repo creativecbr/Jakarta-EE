@@ -1,4 +1,4 @@
-package ad.dto;
+package category.dto;
 
 
 import lombok.*;

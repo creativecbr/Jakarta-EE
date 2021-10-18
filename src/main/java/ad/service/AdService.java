@@ -1,9 +1,9 @@
 package ad.service;
 
 import ad.entity.Ad;
-import ad.entity.Category;
 import ad.repository.AdRepository;
-import ad.repository.CategoryRepository;
+import category.entity.Category;
+import category.repository.CategoryRepository;
 import lombok.NoArgsConstructor;
 import user.entity.User;
 import user.repository.UserRepository;
@@ -58,6 +58,14 @@ public class AdService {
         adRepository.create(ad);
     }
 
+    public void update(Ad ad) {
+        adRepository.update(ad);
+    }
+
+    public void delete(Long id) {
+        adRepository.delete(adRepository.find(id).orElseThrow());
+    }
+
 
     public List<Ad> findAll() {
         return adRepository.findAll();
@@ -89,9 +97,9 @@ public class AdService {
      * @param name category's name
      * @return list with ad's in this category.
      */
-    public List<Ad> findAllByCategoryId(String id) {
+    public List<Ad> findAllByCategoryName(String name) {
 
-        Optional<Category> category = categoryRepository.find(id);
+        Optional<Category> category = categoryRepository.find(name);
         if (category.isPresent()) {
             return adRepository.findAllByCategory(category.get());
         } else {

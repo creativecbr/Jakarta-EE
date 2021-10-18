@@ -2,7 +2,7 @@ package ad.dto;
 
 
 import ad.entity.Ad;
-import ad.entity.Category;
+import category.entity.Category;
 import lombok.*;
 import user.entity.User;
 

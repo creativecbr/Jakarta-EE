@@ -2,7 +2,7 @@ package ad.repository;
 
 
 import ad.entity.Ad;
-import ad.entity.Category;
+import category.entity.Category;
 import datastore.DataStore;
 import repository.Repository;
 import user.entity.User;
@@ -56,8 +56,7 @@ public class AdRepository implements Repository<Ad, Long> {
 
     @Override
     public void update(Ad entity) {
-        throw new UnsupportedOperationException("Not implemented.");
-        //store.updateAd(entity);
+        store.updateAd(entity);
     }
 
     /**

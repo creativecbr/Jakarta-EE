@@ -1,8 +1,10 @@
 package datastore;
 
 
+import ad.entity.Ad;
 import ad.service.AdService;
-import ad.service.CategoryService;
+import category.entity.Category;
+import category.service.CategoryService;
 import lombok.SneakyThrows;
 import user.entity.Role;
 import user.entity.User;
@@ -13,6 +15,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import javax.naming.OperationNotSupportedException;
 import java.io.InputStream;
 import java.time.LocalDate;
 
@@ -42,7 +45,7 @@ public class InitializationData {
         this.categoryService = categoryService;
     }
 
-    public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) {
+    public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) throws OperationNotSupportedException {
         init();
     }
 
@@ -53,7 +56,7 @@ public class InitializationData {
         }
     }
 
-    private synchronized void init(){
+    private synchronized void init() throws OperationNotSupportedException {
 
         User admin = User.builder()
                 .login("admin")
@@ -115,87 +118,90 @@ public class InitializationData {
         userService.create(admin);
         userService.create(user4);
 
-//        Category automotive = Category.builder()
-//                .name("Motoryzacja")
-//                .build();
-//
-//        Category estate = Category.builder()
-//                .name("Nieruchomosci")
-//                .build();
-//
-//        Category electronics = Category.builder()
-//                .name("Elektronika")
-//                .build();
-//
-//        categoryService.create(automotive);
-//        categoryService.create(estate);
-//        categoryService.create(electronics);
-//
-//        Ad ad1 = Ad.builder()
-//                .title("Opel Kadet - niezniszczalna jednostka.")
-//                .description("Sprzedam Opla, 65 KM, 22 sekundy do setki. Ekonomiczny silnik, wykonanie jeszcze niemieckie, rok 1986.")
-//                .category(automotive)
-//                .user(user1)
-//                .build();
-//
-//        Ad ad2 = Ad.builder()
-//                .title("Audi A8 D3 - limuzyna")
-//                .description("Audi 2005 rok, stan idealny, rozrząd wymieniony 2 miesiące temu, przebieg 600k km.")
-//                .category(automotive)
-//                .user(user1)
-//                .build();
-//
-//        Ad ad3 = Ad.builder()
-//                .title("Mieszkanie w Gdańsku 56m^2")
-//                .description("Mieszkanie Gdańsk 56m^2 blisko środmieścia, w Pruszczu gdańskim, cena okazyjna 900 tyś. zł. ")
-//                .category(estate)
-//                .user(user1)
-//                .build();
-//
-//        Ad ad4 = Ad.builder()
-//                .title("iPhone 8 plus, wszystko sprawne")
-//                .description("Sprzedam iPhone 8 plus, tylko wysyłka za przedplatą, stan jak na zdjęciach, używany przez kobiete. ")
-//                .category(electronics)
-//                .user(user1)
-//                .build();
-//
-//        Ad ad5 = Ad.builder()
-//                .title("Mercedes G klasa, comfort")
-//                .description("Mercedes G klasa, comfort, świetnie sie prowadzi, jak droga jest prosta to ma autopilota.")
-//                .category(automotive)
-//                .user(user2)
-//                .build();
-//
-//        Ad ad6 = Ad.builder()
-//                .title("Działka ROD, 2 ary, świetna okolica, trochę zalana.")
-//                .description("Tak jak w opisie, cena wywoławcza 80 tyś. do negocjacji.")
-//                .category(estate)
-//                .user(user2)
-//                .build();
-//
-//        Ad ad7 = Ad.builder()
-//                .title("Mieszkanie w Sopocie 16m^2")
-//                .description("Jeden pokój z kibelkiem i gazówką, blat roboczy, idealny dla młodego małżeństwa z dzieckiem. Cena: 350 000 zł. ")
-//                .category(estate)
-//                .user(user2)
-//                .build();
-//
-//        Ad ad8 = Ad.builder()
-//                .title("airPods (nie)oryginalne w cenie oryginalnych")
-//                .description("Sprzedam sluchawki airPads firmy manta, wyglądają identycznie jak airPodsy firmy apple, aczkolwiek nie ma w nich głośników.")
-//                .category(electronics)
-//                .user(user2)
-//                .build();
-//
-//
-//        adService.create(ad1);
-//        adService.create(ad2);
-//        adService.create(ad3);
-//        adService.create(ad4);
-//        adService.create(ad5);
-//        adService.create(ad6);
-//        adService.create(ad7);
-//        adService.create(ad8);
+        Category automotive = Category.builder()
+                .name("Motoryzacja")
+                .description("Samochody osobowe, ciężarowe, dostawcze, części i wiele innych. ")
+                .build();
+
+        Category estate = Category.builder()
+                .name("Nieruchomosci")
+                .description("Mieszkania, domy, działki - wynajem / dzierżawa / sprzedaż, nie zastanawiaj się, sprzedaj swój dom!")
+                .build();
+
+        Category electronics = Category.builder()
+                .name("Elektronika")
+                .description("Elektronika wszelkiego rodzaju, RTV, AGD, ale także podzespoły elektroniczne dla forumowiczów elektroda.pl")
+                .build();
+
+        categoryService.create(automotive);
+        categoryService.create(estate);
+        categoryService.create(electronics);
+
+        Ad ad1 = Ad.builder()
+                .title("Opel Kadet - niezniszczalna jednostka.")
+                .description("Sprzedam Opla, 65 KM, 22 sekundy do setki. Ekonomiczny silnik, wykonanie jeszcze niemieckie, rok 1986.")
+                .category(automotive)
+                .user(user1)
+                .build();
+
+        Ad ad2 = Ad.builder()
+                .title("Audi A8 D3 - limuzyna")
+                .description("Audi 2005 rok, stan idealny, rozrząd wymieniony 2 miesiące temu, przebieg 600k km.")
+                .category(automotive)
+                .user(user1)
+                .build();
+
+        Ad ad3 = Ad.builder()
+                .title("Mieszkanie w Gdańsku 56m^2")
+                .description("Mieszkanie Gdańsk 56m^2 blisko środmieścia, w Pruszczu gdańskim, cena okazyjna 900 tyś. zł. ")
+                .category(estate)
+                .user(user1)
+                .build();
+
+        Ad ad4 = Ad.builder()
+                .title("iPhone 8 plus, wszystko sprawne")
+                .description("Sprzedam iPhone 8 plus, tylko wysyłka za przedplatą, stan jak na zdjęciach, używany przez kobiete. ")
+                .category(electronics)
+                .user(user1)
+                .build();
+
+        Ad ad5 = Ad.builder()
+                .title("Mercedes G klasa, comfort")
+                .description("Mercedes G klasa, comfort, świetnie sie prowadzi, jak droga jest prosta to ma autopilota.")
+                .category(automotive)
+                .user(user2)
+                .build();
+
+        Ad ad6 = Ad.builder()
+                .title("Działka ROD, 2 ary, świetna okolica, trochę zalana.")
+                .description("Tak jak w opisie, cena wywoławcza 80 tyś. do negocjacji.")
+                .category(estate)
+                .user(user2)
+                .build();
+
+        Ad ad7 = Ad.builder()
+                .title("Mieszkanie w Sopocie 16m^2")
+                .description("Jeden pokój z kibelkiem i gazówką, blat roboczy, idealny dla młodego małżeństwa z dzieckiem. Cena: 350 000 zł. ")
+                .category(estate)
+                .user(user2)
+                .build();
+
+        Ad ad8 = Ad.builder()
+                .title("airPods (nie)oryginalne w cenie oryginalnych")
+                .description("Sprzedam sluchawki airPads firmy manta, wyglądają identycznie jak airPodsy firmy apple, aczkolwiek nie ma w nich głośników.")
+                .category(electronics)
+                .user(user2)
+                .build();
+
+
+        adService.create(ad1);
+        adService.create(ad2);
+        adService.create(ad3);
+        adService.create(ad4);
+        adService.create(ad5);
+        adService.create(ad6);
+        adService.create(ad7);
+        adService.create(ad8);
 
 
 

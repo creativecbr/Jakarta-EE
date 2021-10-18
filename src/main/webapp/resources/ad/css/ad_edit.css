@@ -1,0 +1,5 @@
+.ad__form {
+    display: grid;
+    grid-template-columns: 200px;
+    grid-gap: 5px;
+}

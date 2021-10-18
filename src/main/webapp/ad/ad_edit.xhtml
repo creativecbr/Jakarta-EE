@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/template/main.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{adEdit.id}" required="true"/>
+        <f:viewAction action="#{adEdit.init()}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:outputStylesheet library="ad" name="css/ad_edit.css"/><!-- Automatically relocated to head. -->
+<!--        <h:panelGroup rendered="#{userContext.authorized}" layout="block">-->
+<!--      //  <h:panelGroup layout="block">-->
+            <article class="text--justified">
+                <header><h2>Edit ad info</h2></header>
+                <h:form class="ad__form">
+                    <div>
+                        <h:outputLabel for="title" value="Title:"/>
+                        <h:inputText class="ui-control ui-input" id="title" value="#{adEdit.ad.title}"/>
+                    </div>
+                <br/>
+                    <div>
+                        <h:outputLabel for="description" value="Description:"/>
+                        <h:inputTextarea class="ui-control ui-input ui-textarea" id="description" value="#{adEdit.ad.description}"/>
+                    </div>
+                <br/>
+                    <div>
+                        <h:outputLabel  value="Category:"/>
+                        <h:selectOneListbox id="category" value="#{adEdit.ad.category}"
+                                            layout="pageDirection">
+                            <f:selectItems var="category" value="#{adEdit.categories}" itemValue="#{category.name}"
+                                           itemLabel="#{category.name}" itemLabelEscaped="false"/>
+                        </h:selectOneListbox>
+                    </div>
+                <br/>
+                    <div>
+                        <h:commandButton class="ui-control ui-button" value="Update"
+                                        action="#{adEdit.saveAction()}"/>
+                    </div>
+                </h:form>
+            </article>
+
+<!--     //   </h:panelGroup>-->
+    </ui:define>
+
+</ui:composition>

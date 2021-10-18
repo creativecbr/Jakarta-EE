@@ -1,18 +1,13 @@
 package ad.servlet;
 
 import ad.service.AdService;
-import ad.service.CategoryService;
+import category.service.CategoryService;
 
 import javax.inject.Inject;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Optional;
 
 /**
  * Servlet for handling HTTP requests considering characters operations. Servlet API does not allow named path
