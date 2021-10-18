@@ -5,66 +5,173 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <f:view>
-        <h:head>
-            <title>Pasa - purchase and sale</title>
+<f:view>
+    <h:head>
 
-            <meta charset="UTF-8"/>
-            <meta name="description" content="PASA"/>
-            <meta name="keywords" content="Buy, Sell"/>
-            <meta name="author" content="xvc studios"/>
-
-            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>Pasa - sprzedaż i kupno</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
 
-<!--            <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>-->
-<!--            <script src="/js/script.js" defer="defer"></script>-->
-<!--            <script type="module" src="/js/users_view_script.js" defer="defer"></script>-->
+        <h:outputStylesheet library="default" name="css/styles.css"/>
+        <h:outputStylesheet library="default" name="css/styleForm.css"/>
+        <h:outputStylesheet library="default" name="css/font-aw/css/font-awesome.css"/>
+        <h:outputStylesheet library="default" name="css/font-aw/css/font-awesome.min.css"/>
+        <h:outputStylesheet library="default" name="css/aqua.min.css"/>
 
-
-<!--            <link rel="stylesheet" href="css/style.css"/>-->
-<!--            <link rel="stylesheet" href="css/styleForm.css"/>-->
-<!--            <link rel="stylesheet" href="css/font-aw/css/font-awesome.css"/>-->
-<!--            <link rel="stylesheet" href="css/font-aw/css/font-awesome.min.css"/>-->
-<!--            <link rel="stylesheet" href="css/aqua.min.css"/>-->
-
-<!--            <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'/>-->
-<!--            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>-->
-
-            <h:outputStylesheet library="default" name="css/styles.css"/>
-        </h:head>
-        <h:body>
-            <div class="container">
-                <header class="header">
-                    <h1>PASA</h1>
-                    <h:form>
-<!--                    <h:form rendered="#{!userContext.authorized}">-->
-                        <h:outputLabel value="Login:" for="login"/>
-                        <h:inputText id="login" class="ui-control ui-input" value=""/>
-                        <h:outputLabel value="Password:" for="password"/>
-                        <h:inputSecret id="password" class="ui-control ui-input" value=""/>
-<!--                        <h:commandButton class="ui-control ui-button" type="submit" value="Login" action="#{cate}"/>-->
-                    </h:form>
-
-                </header>
-
-                <nav class="navigation-bar">
-                    <ul>
-                        <li><h:link outcome="/index.xhtml">main</h:link></li>
-                        <li><h:link outcome="/about/about.xhtml">about</h:link></li>
-                        <li><h:link outcome="/category/category_list.xhtml">categories</h:link></li>
-<!--                       // <li><h:link outcome="/category/category_view.xhtml">all ads</h:link></li>-->
-                    </ul>
-                </nav>
-
-                <section class="main-section">
-                    <ui:insert name="content"/>
-                </section>
-
-                <footer class="footer">
-                    <p><i>xvc_studio</i> &#169; 2020.</p>
-                </footer>
+    </h:head>
+    <h:body>
+        <div id="top">
+            <div id="top-sign-in">
+				<span class="log-in">
+					 <h:link outcome="/category/category_list.xhtml">Użytkownicy</h:link>
+				</span>
             </div>
-        </h:body>
-    </f:view>
+
+        </div>
+        <div id="menu-bar">
+            <div class="inline-half-div">
+                <div style="margin-left: 30%;">
+                    <h:link outcome="/category/category_list.xhtml">PASA</h:link>
+                </div>
+            </div>
+            <div class="inline-half-div" style="text-align:right;">
+                <div id="searching-bar">
+                    <form action="#">
+                        <input type="text" id="searchInput" name="search" placeholder="Wyszukaj..."/>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="content">
+            <div class="one-column-content">
+                <div class="one-column user-list-container">
+                    <ui:insert name="content"/>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div id="footer">
+            <div class="footer-up">
+                <div id="left-footer-up">
+                    <div class="footer-description">
+                        <p>O twórcy</p>
+                        <span class="simple-description">Paweł Leśniewski - Kontakt z trenerem nigdy nie był łatwiejszy. Możesz połączyć się ze swoim trenerem z dowolnego miejsca na świecie za pośrednictwem komputera lub smartfona. Każda Twoja wiadomość spotka się z odpowiedzią a nad każdym problem pochyli się specjalista z zakresu fitness. </span><br></br>
+                    </div>
+
+                    <div class="footer-description">
+                        <p>Ciekawe strony</p>
+                        <span class="simple-description">Użytkownicy</span><br></br>
+                        <span class="simple-description">Kategorie</span><br></br>
+                        <span class="simple-description">Ogłoszenia</span><br></br>
+                    </div>
+
+                    <div class="footer-description">
+                        <p>O projekcie</p>
+                        <span class="simple-description">Paweł Leśniewski - projekt oparty na Java + Spring Boot/MVC + H2 baza danych w pamięci. Aplikacja oparta o mikroserwisy: Użytkownicy oraz wspólny serwis Ogłoszenia i Kategorie. Zapytania kierowane na trasujący API gateway. </span><br></br>
+                    </div>
+
+                    <div class="clear-both"></div>
+                </div>
+                <div id="right-footer-up">.</div>
+                <div class="clear-both"></div>
+
+
+            </div>
+            <div class="footer-bot">
+                <div class="footer-bot-middle">
+                    <div class="left-bot-middle"><b>Informacje</b></div>
+                    <div class="right-bot-middle">
+                        <span><b>Kontakt</b></span><span><b>Nasz zespół</b></span><span><b>O cookies</b></span></div>
+                    <div class="clear-both"></div>
+
+                </div>
+                <div class="footer-bot-middle" style="height:60%;">
+                    <div class="bot-right-down">
+                        <div style="margin-top:2%;">Powered by HTML/CSS/JS/JAVA/SPRING FRAMEWORK © xvc_studio <br></br></div>
+                    </div>
+                    <div class="bot-left-down">
+                        <div style="margin-top:2%;">Wszystkie czasy zgodne ze strefą UTC</div>
+
+                    </div>
+                    <div class="clear-both"></div>
+
+                </div>
+            </div>
+        </div>
+    </h:body>
+</f:view>
 </html>
+
+        <!--<?xml version="1.0" encoding="UTF-8"?>-->
+        <!--<!DOCTYPE html>-->
+        <!--<html lang="en"-->
+        <!--      xmlns="http://www.w3.org/1999/xhtml"-->
+        <!--      xmlns:h="http://xmlns.jcp.org/jsf/html"-->
+        <!--      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"-->
+        <!--      xmlns:f="http://xmlns.jcp.org/jsf/core">-->
+        <!--    <f:view>-->
+        <!--        <h:head>-->
+        <!--            <title>Pasa - purchase and sale</title>-->
+
+        <!--            <meta charset="UTF-8"/>-->
+        <!--            <meta name="description" content="PASA"/>-->
+        <!--            <meta name="keywords" content="Buy, Sell"/>-->
+        <!--            <meta name="author" content="xvc studios"/>-->
+
+        <!--            <meta name="viewport" content="width=device-width, initial-scale=1"/>-->
+
+
+        <!--&lt;!&ndash;            <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <script src="/js/script.js" defer="defer"></script>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <script type="module" src="/js/users_view_script.js" defer="defer"></script>&ndash;&gt;-->
+
+
+        <!--&lt;!&ndash;            <link rel="stylesheet" href="css/style.css"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <link rel="stylesheet" href="css/styleForm.css"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <link rel="stylesheet" href="css/font-aw/css/font-awesome.css"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <link rel="stylesheet" href="css/font-aw/css/font-awesome.min.css"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <link rel="stylesheet" href="css/aqua.min.css"/>&ndash;&gt;-->
+
+        <!--&lt;!&ndash;            <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'/>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>&ndash;&gt;-->
+
+        <!--            <h:outputStylesheet library="default" name="css/styles.css"/>-->
+        <!--        </h:head>-->
+        <!--        <h:body>-->
+        <!--            <div class="container">-->
+        <!--                <header class="header">-->
+        <!--                    <h1>PASA</h1>-->
+        <!--                    <h:form>-->
+        <!--&lt;!&ndash;                    <h:form rendered="#{!userContext.authorized}">&ndash;&gt;-->
+        <!--                        <h:outputLabel value="Login:" for="login"/>-->
+        <!--                        <h:inputText id="login" class="ui-control ui-input" value=""/>-->
+        <!--                        <h:outputLabel value="Password:" for="password"/>-->
+        <!--                        <h:inputSecret id="password" class="ui-control ui-input" value=""/>-->
+        <!--&lt;!&ndash;                        <h:commandButton class="ui-control ui-button" type="submit" value="Login" action="#{cate}"/>&ndash;&gt;-->
+        <!--                    </h:form>-->
+
+        <!--                </header>-->
+
+        <!--                <nav class="navigation-bar">-->
+        <!--                    <ul>-->
+        <!--                        <li><h:link outcome="/index.xhtml">main</h:link></li>-->
+        <!--                        <li><h:link outcome="/about/about.xhtml">about</h:link></li>-->
+        <!--                        <li><h:link outcome="/category/category_list.xhtml">categories</h:link></li>-->
+        <!--&lt;!&ndash;                       // <li><h:link outcome="/category/category_view.xhtml">all ads</h:link></li>&ndash;&gt;-->
+        <!--                    </ul>-->
+        <!--                </nav>-->
+
+        <!--                <section class="main-section">-->
+        <!--                    <ui:insert name="content"/>-->
+        <!--                </section>-->
+
+        <!--                <footer class="footer">-->
+        <!--                    <p><i>xvc_studio</i> &#169; 2020.</p>-->
+        <!--                </footer>-->
+        <!--            </div>-->
+        <!--        </h:body>-->
+        <!--    </f:view>-->
+        <!--</html>-->

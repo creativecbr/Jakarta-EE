@@ -16,7 +16,7 @@
         <h:panelGroup layout="block">
             <article class="text--justified">
                 <header><h2>Create AD </h2></header>
-                <h:form class="ad_form">
+                <h:form class="ad_form" style="text-align:left;">
 
                     <h:outputLabel for="title" value="Title:"/>
                     <h:inputText class="ui-control ui-input" id="title" value="#{adCreate.ad.title}"/>
@@ -24,20 +24,21 @@
                     <h:outputLabel for="description" value="Description:"/>
                     <h:inputTextarea class="ui-control" id="description" value="#{adCreate.ad.description}"/>
 
-                    <h:selectOneListbox id="category" value="#{adCreate.ad.category}"
+
+                    <h:outputLabel value="Category:"/>
+                    <h:selectOneListbox id="category" class="ui-control" value="#{adCreate.ad.category}"
                                         layout="pageDirection">
                         <f:selectItems var="category" value="#{adCreate.categories}" itemValue="#{category}"
                                        itemLabel="#{category.name}" itemLabelEscaped="false"/>
                     </h:selectOneListbox>
 
-                    <h:selectOneListbox id="user" value="#{adCreate.ad.user}"
+                    <h:outputLabel value="User:"/>
+                    <h:selectOneListbox id="user" class="ui-control" value="#{adCreate.ad.user}"
                                         layout="pageDirection">
                         <f:selectItems var="user" value="#{adCreate.users}" itemValue="#{user}"
                                        itemLabel="#{user.login}" itemLabelEscaped="false"/>
                     </h:selectOneListbox>
 
-                    <h:commandButton class="ui-control ui-button" value="Cancel" immediate="true"
-                                     action="#{adCreate.cancelAction()}"/>
 
                     <h:commandButton class="ui-control ui-button" value="Create" immediate="false"
                                      action="#{adCreate.saveAction}"/>
