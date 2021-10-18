@@ -1,9 +1,13 @@
 package ad.model.converter;
 
 import ad.model.CategoryModel;
+import ad.model.UserModel;
 import category.entity.Category;
 import category.service.CategoryService;
 import lombok.SneakyThrows;
+import user.entity.User;
+import user.service.UserService;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -17,35 +21,35 @@ import java.util.Optional;
  * managed by container that is injection was not possible. As this bean is not annotated with scope the beans.xml
  * descriptor must be present.
  */
-@FacesConverter(forClass = CategoryModel.class, managed = true)
-public class CategoryModelConverter implements Converter<CategoryModel> {
+@FacesConverter(forClass = UserModel.class, managed = true)
+public class UserModelConverter implements Converter<UserModel> {
 
     /**
      * Service for professions management.
      */
-    private CategoryService service;
+    private UserService service;
 
     @Inject
-    public CategoryModelConverter(CategoryService service) {
+    public UserModelConverter(UserService service) {
         this.service = service;
     }
 
     @SneakyThrows
     @Override
-    public CategoryModel getAsObject(FacesContext context, UIComponent component, String value) {
+    public UserModel getAsObject(FacesContext context, UIComponent component, String value) {
 
 
         if (value == null || value.isBlank()) {
             return null;
         }
-        Optional<Category> category = service.find(value);
+        Optional<User> user = service.find(value);
 
-        return category.isEmpty() ? null : CategoryModel.entityToModelMapper().apply(category.get());
+        return user.isEmpty() ? null : UserModel.entityToModelMapper().apply(user.get());
     }
 
     @Override
-    public String getAsString(FacesContext context, UIComponent component, CategoryModel value) {
-        return value == null ? "" : value.getName();
+    public String getAsString(FacesContext context, UIComponent component, UserModel value) {
+        return value == null ? "" : value.getLogin();
     }
 
 }

@@ -13,10 +13,13 @@ import lombok.SneakyThrows;
 import user.service.UserService;
 
 import javax.annotation.PostConstruct;
+
+
 import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Scope;
+
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.Serializable;
@@ -76,7 +79,6 @@ public class AdCreate implements Serializable {
     /**
      * Injected conversation.
      */
-  //  private Conversation conversation;
 
 
     @Inject
@@ -84,7 +86,7 @@ public class AdCreate implements Serializable {
         this.service = service;
         this.categoryService = categoryService;
         this.userService = userService;
-       // this.conversation = conversation;
+
     }
 
     /**
@@ -107,7 +109,7 @@ public class AdCreate implements Serializable {
         ad = new AdCreateModel();
         ad.setTitle("");
 
-      //  conversation.begin();
+
 
     }
 
@@ -117,17 +119,11 @@ public class AdCreate implements Serializable {
 
     public String saveAction() {
 
-
-        // PROBLEM
-        System.out.println(ad.getCategory());
-        System.out.println(ad.getUser());
-        System.out.println(ad.toString());
-
         service.create(AdCreateModel.modelToEntityMapper(
                 category -> categoryService.find(ad.getCategory().getName()).orElseThrow(),
                 user -> userService.find(ad.getUser().getLogin()).orElseThrow()).apply(ad));
-       // conversation.end();
-        return "/ad/ad_list.xhtml?faces-redirect=true";
+
+        return "/ad/ad_create.xhtml?faces-redirect=true";
     }
 
 }

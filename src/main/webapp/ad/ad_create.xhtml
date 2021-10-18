@@ -32,14 +32,14 @@
 
                     <h:selectOneListbox id="user" value="#{adCreate.ad.user}"
                                         layout="pageDirection">
-                        <f:selectItems var="user" value="#{adCreate.users}" itemValue="#{user.login}"
+                        <f:selectItems var="user" value="#{adCreate.users}" itemValue="#{user}"
                                        itemLabel="#{user.login}" itemLabelEscaped="false"/>
                     </h:selectOneListbox>
 
                     <h:commandButton class="ui-control ui-button" value="Cancel" immediate="true"
                                      action="#{adCreate.cancelAction()}"/>
 
-                    <h:commandButton class="ui-control ui-button" value="Create" immediate="true"
+                    <h:commandButton class="ui-control ui-button" value="Create" immediate="false"
                                      action="#{adCreate.saveAction}"/>
                 </h:form>
             </article>

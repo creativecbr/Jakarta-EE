@@ -93,7 +93,7 @@ public class CategoryView implements Serializable {
       adService.delete(id);
 
         String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
-        return viewId + "category_view?faces-redirect=true";
+        return viewId + "?faces-redirect=true&includeViewParams=true";
     }
 
 
