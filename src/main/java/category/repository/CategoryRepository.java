@@ -55,7 +55,7 @@ public class CategoryRepository implements Repository<Category, String> {
 
     @Override
     public void update(Category entity) {
-        throw new UnsupportedOperationException("Operation not implemented.");
+        store.updateCategory(entity);
     }
 
 }

@@ -1,48 +1,133 @@
-###
-
-GET http://localhost:9080/PASA/api/users/admin
+GET http://localhost:9080/PASA/api/categories
 
 ###
 
-GET http://localhost:9080/PASA/api/users
+GET http://localhost:9080/PASA/api/categories/Motoryzacja
 
 ###
 
-POST http://localhost:9080/PASA/api/avatars/bezzdjec
-Content-Type: multipart/form-data; boundary=boundary
-
---boundary
-Content-Disposition: form-data; name="avatar"; filename="do_zamiany.jpg'
-
-< ../../src/main/resources/datastore/avatars/do_zamiany.jpg
---boundary--
+GET http://localhost:9080/PASA/api/ads
 
 ###
 
-### to nie pojdzie, bo admin juz ma avatar
+GET http://localhost:9080/PASA/api/ads/3
 
-POST http://localhost:9080/PASA/api/avatars/admin
-Content-Type: multipart/form-data; boundary=boundary
+### tu
 
---boundary
-Content-Disposition: form-data; name="avatar";
-
-< ../../src/main/resources/datastore/avatars/do_zamiany.jpg
---boundary--
-
+GET http://localhost:9080/PASA/api/categories/Motoryzacja/ads
 
 ###
 
-PUT http://localhost:9080/PASA/api/avatars/admin
-Content-Type: multipart/form-data; boundary=boundary
-
---boundary
-Content-Disposition: form-data; name="avatar"; filename="admin.jpg'
-
-< ../../src/main/resources/datastore/avatars/do_zamiany.jpg
---boundary--
-
+GET http://localhost:9080/PASA/api/categories/Motoryzacja/ads/3
 
 ###
 
-DELETE http://localhost:9080/PASA/api/avatars/admin
+GET http://localhost:9080/PASA/api/categories/Motoryzacja/ads/2
+
+###
+
+POST http://localhost:9080/PASA/api/categories
+Content-Type: application/json
+
+{
+  "name": "Zabawki",
+  "description": "Zabawki dla dzieci i nie tylko. "
+
+}
+
+###
+
+DELETE http://localhost:9080/PASA/api/categories/Motoryzacja/ads/2
+
+###
+
+GET http://localhost:9080/PASA/api/categories/Zabawki
+
+###
+
+POST http://localhost:9080/PASA/api/categories/Zabawki/ads
+Content-Type: application/json
+
+{
+  "title": "Ogloszenie nowe",
+  "description": "Tylko na cele edukacyjne, wcale nie mam zamiaru sprzedać opla."
+
+}
+
+###
+
+GET http://localhost:9080/PASA/api/categories/Zabawki/ads
+
+###
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+####
+#
+#GET http://localhost:9080/PASA/api/users/admin
+#
+####
+#
+#GET http://localhost:9080/PASA/api/users
+#
+####
+#
+#POST http://localhost:9080/PASA/api/avatars/bezzdjec
+#Content-Type: multipart/form-data; boundary=boundary
+#
+#--boundary
+#Content-Disposition: form-data; name="avatar"; filename="do_zamiany.jpg'
+#
+#< ../../src/main/resources/datastore/avatars/do_zamiany.jpg
+#--boundary--
+#
+####
+#
+#### to nie pojdzie, bo admin juz ma avatar
+#
+#POST http://localhost:9080/PASA/api/avatars/admin
+#Content-Type: multipart/form-data; boundary=boundary
+#
+#--boundary
+#Content-Disposition: form-data; name="avatar";
+#
+#< ../../src/main/resources/datastore/avatars/do_zamiany.jpg
+#--boundary--
+#
+#
+####
+#
+#PUT http://localhost:9080/PASA/api/avatars/admin
+#Content-Type: multipart/form-data; boundary=boundary
+#
+#--boundary
+#Content-Disposition: form-data; name="avatar"; filename="admin.jpg'
+#
+#< ../../src/main/resources/datastore/avatars/do_zamiany.jpg
+#--boundary--
+#
+#
+####
+#
+#DELETE http://localhost:9080/PASA/api/avatars/admin

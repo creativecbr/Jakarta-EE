@@ -15,14 +15,19 @@ import java.util.function.Function;
 public class CreateCategoryRequest {
 
     /**
-     * Category's name.
+     * Name of category.
      */
     private String name;
 
+    /**
+     * Description of category.
+     */
+    private String description;
 
     public static Function<CreateCategoryRequest, Category> dtoToEntityMapper() {
         return request -> Category.builder()
                 .name(request.getName())
+                .description(request.getDescription())
                 .build();
     }
 }

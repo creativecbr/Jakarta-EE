@@ -107,4 +107,8 @@ public class AdService {
         }
     }
 
+    public void createWithCategory(Ad ad, Category category){
+        adRepository.createWithSpecifiedCategory(ad, category);
+    }
+
 }

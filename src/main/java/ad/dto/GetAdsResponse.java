@@ -48,7 +48,7 @@ public class GetAdsResponse {
     @Singular
     private List<Ad> ads;
 
-    public static Function<Collection<Ad>, GetAdsResponse> entityToDtoMapper()
+    public static Function<Collection<ad.entity.Ad>, GetAdsResponse> entityToDtoMapper()
     {
         return ads -> {
             GetAdsResponseBuilder response = GetAdsResponse.builder();
@@ -57,7 +57,7 @@ public class GetAdsResponse {
                             .id(ad.getId())
                             .title(ad.getTitle())
                             .description(ad.getDescription())
-                            .category(ad.getCategory())
+                            .category(ad.getCategory().getName())
                             .build())
                     .forEach(response::ad);
             return response.build();

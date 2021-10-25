@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--Open Liberty documentation does not use schema in examples.-->
-<server description="Jakarta EE - PASA">
+<server description="Jakarta EE example server">
     <featureManager>
         <feature>servlet-4.0</feature>
         <feature>jsonb-1.0</feature>
@@ -8,5 +8,6 @@
         <feature>jsf-2.3</feature>
         <feature>jsp-2.3</feature>
         <feature>el-3.0</feature>
+        <feature>jaxrs-2.1</feature>
     </featureManager>
 </server>

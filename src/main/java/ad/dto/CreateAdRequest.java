@@ -39,17 +39,12 @@ public class CreateAdRequest {
     private String user;
 
     /**
-     * @param categoryFunction function for converting category name to category entity object
      * @return mapper for convenient converting dto object to entity object
      */
-    public static Function<CreateAdRequest, Ad> dtoToEntityMapper(
-            Function<String, Category> categoryFunction,
-            Supplier<User> userSupplier) {
+    public static Function<CreateAdRequest, Ad> dtoToEntityMapper(){
         return request -> Ad.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
-                .user(userSupplier.get())
-                .category(categoryFunction.apply(request.getCategory()))
                 .build();
     }
 

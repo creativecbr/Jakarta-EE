@@ -277,6 +277,23 @@ public class DataStore {
                             "The ad with id " + ad.getId() + " does not exist");
                 });
     }
+
+    public void createAd(Ad ad, Category category) {
+        ad.setCategory(category);
+        createAd(ad);
+    }
+
+    public void updateCategory(Category entity) {
+        findCategory(entity.getName()).ifPresentOrElse(
+                original -> {
+                    categories.remove(original);
+                    categories.add(entity);
+                },
+                () -> {
+                    throw new IllegalArgumentException(
+                            String.format("The category with name \"%s\" does not exist", entity.getName()));
+                });
+    }
 }
 
 

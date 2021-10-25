@@ -39,11 +39,9 @@ public class CategoryService {
         }
 
 
-//    public void update(Category category) throws OperationNotSupportedException {
-//        throw new OperationNotSupportedException("Not implemented");
-//        //
-//        // categoryRepository.save(category);
-//        }
+    public void update(Category category) {
+         categoryRepository.update(category);
+    }
 
 
     public Optional<Category> find(Long id)  {

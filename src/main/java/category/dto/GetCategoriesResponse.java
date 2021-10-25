@@ -39,7 +39,7 @@ public class GetCategoriesResponse {
     @Singular
     private List<Category> categories;
 
-    public static Function<Collection<Category>, GetCategoriesResponse> entityToDtoMapper()
+    public static Function<Collection<category.entity.Category>, GetCategoriesResponse> entityToDtoMapper()
     {
         return categories -> {
             GetCategoriesResponseBuilder response = GetCategoriesResponse.builder();

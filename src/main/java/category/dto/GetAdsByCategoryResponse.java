@@ -1,4 +1,5 @@
-package ad.dto;
+package category.dto;
+
 import lombok.*;
 import java.util.Collection;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.function.Function;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode
-public class GetAdsByCategoriesResponse {
+public class GetAdsByCategoryResponse {
 
     @Getter
     @Setter
@@ -36,9 +37,9 @@ public class GetAdsByCategoriesResponse {
     @Singular
     private List<Ad> ads;
 
-    public static Function<Collection<Ad>, GetAdsByCategoriesResponse> entityToDtoMapper() {
+    public static Function<Collection<ad.entity.Ad>, GetAdsByCategoryResponse> entityToDtoMapper() {
         return ads -> {
-            GetAdsByCategoriesResponseBuilder response = GetAdsByCategoriesResponse.builder();
+            GetAdsByCategoryResponseBuilder response = GetAdsByCategoryResponse.builder();
             ads.stream()
                     .map(ad -> Ad.builder()
                             .title(ad.getTitle())

@@ -94,4 +94,8 @@ public class AdRepository implements Repository<Ad, Long> {
                 .collect(Collectors.toList());
     }
 
+    public void createWithSpecifiedCategory(Ad ad, Category category) {
+        store.createAd(ad, category);
+    }
+
 }

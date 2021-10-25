@@ -1,12 +1,11 @@
 package view;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.faces.annotation.FacesConfig;
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 
 /**
  * Global config for JSF.
  */
-@FacesConfig
-@ApplicationScoped
-public class Config {
+@ApplicationPath("/api")
+public class Config extends Application {
 }
