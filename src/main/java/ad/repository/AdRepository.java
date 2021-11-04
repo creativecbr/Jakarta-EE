@@ -10,6 +10,9 @@ import utils.CloningUtility;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,43 +23,41 @@ import java.util.stream.Collectors;
 @Dependent
 public class AdRepository implements Repository<Ad, Long> {
 
-    /**
-     * Underlying data store. In future should be replaced with database connection.
-     */
-    private DataStore store;
-
 
     /**
-     * @param store data store
+     * Connection with the database (not thread safe).
      */
-    @Inject
-    public AdRepository(DataStore store) {
-        this.store = store;
+    private EntityManager em;
+
+    @PersistenceContext
+    public void setEm(EntityManager em) {
+        this.em = em;
     }
+
 
     @Override
     public Optional<Ad> find(Long id) {
-        return store.findAd(id);
+        return Optional.ofNullable(em.find(Ad.class, id));
     }
 
     @Override
     public List<Ad> findAll() {
-        return store.findAllAds();
+        return em.createQuery("select a from Ad a", Ad.class).getResultList();
     }
 
     @Override
     public void create(Ad entity) {
-        store.createAd(entity);
+        em.persist(entity);
     }
 
     @Override
     public void delete(Ad entity) {
-        store.deleteAd(entity.getId());
+        em.remove(em.find(Ad.class, entity.getId()));
     }
 
     @Override
     public void update(Ad entity) {
-        store.updateAd(entity);
+        em.merge(entity);
     }
 
     /**
@@ -67,11 +68,14 @@ public class AdRepository implements Repository<Ad, Long> {
      * @return container (can be empty) with character
      */
     public Optional<Ad> findByIdAndUser(Long id, User user) {
-        return store.findAllAds().stream()
-                .filter(ad -> ad.getUser().equals(user))
-                .filter(ad -> ad.getId().equals(id))
-                .findFirst()
-                .map(CloningUtility::clone);
+        try {
+            return Optional.of(em.createQuery("select a from Ad a where a.id = :id and a.user = :user", Ad.class)
+                    .setParameter("user", user)
+                    .setParameter("id", id)
+                    .getSingleResult());
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -81,21 +85,21 @@ public class AdRepository implements Repository<Ad, Long> {
      * @return list (can be empty) of user's characters
      */
     public List<Ad> findAllByUser(User user) {
-        return store.findAllAds().stream()
-                .filter(ad -> ad.getUser().equals(user))
-                .map(CloningUtility::clone)
-                .collect(Collectors.toList());
+        return em.createQuery("select a from Ad a where a.user = :user", Ad.class)
+                .setParameter("user", user)
+                .getResultList();
     }
 
     public List<Ad> findAllByCategory(Category category) {
-        return store.findAllAds().stream()
-                .filter(ad -> ad.getCategory().equals(category))
-                .map(CloningUtility::clone)
-                .collect(Collectors.toList());
+
+        return em.createQuery("select a from Ad a where a.category = :category", Ad.class)
+                .setParameter("category", category)
+                .getResultList();
     }
 
     public void createWithSpecifiedCategory(Ad ad, Category category) {
-        store.createAd(ad, category);
+        ad.setCategory(category);
+        em.persist(ad);
     }
 
 }
