@@ -13,6 +13,7 @@ import user.service.UserService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
+import javax.enterprise.context.control.RequestContextController;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.naming.OperationNotSupportedException;
@@ -37,17 +38,22 @@ public class InitializationData {
      */
     private final CategoryService categoryService;
 
+
+    private RequestContextController requestContextController;
+
     @Inject
-    public InitializationData(UserService userService, AdService adService, CategoryService categoryService)
+    public InitializationData(UserService userService, AdService adService, CategoryService categoryService, RequestContextController requestContextController)
     {
         this.userService = userService;
         this.adService = adService;
         this.categoryService = categoryService;
+        this.requestContextController = requestContextController;
     }
 
-    public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) throws OperationNotSupportedException {
+    public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) {
         init();
     }
+
 
     @SneakyThrows
     private byte[] getResourceAsByteArray(String name) {
@@ -56,7 +62,8 @@ public class InitializationData {
         }
     }
 
-    private synchronized void init() throws OperationNotSupportedException {
+    private synchronized void init() {
+        requestContextController.activate();// start request scope in order to inject request scoped repositories
 
         User admin = User.builder()
                 .login("admin")
@@ -66,7 +73,6 @@ public class InitializationData {
                 .password("admin")
                 .role(Role.ADMIN)
                 .email("asdasd@wp.pl")
-                .avatar(getResourceAsByteArray("avatars/admin.jpg")) //package relative path
                 .build();
 
         User user1 = User.builder()
@@ -77,7 +83,6 @@ public class InitializationData {
                 .password("admin")
                 .role(Role.ADMIN)
                 .email("uyiouyio@wp.pl")
-                .avatar(getResourceAsByteArray("avatars/creativexvc.jpg"))//package relative path
                 .build();
 
         User user2 = User.builder()
@@ -88,7 +93,6 @@ public class InitializationData {
                 .password("admin")
                 .role(Role.USER)
                 .email("dfhghdfgh@wp.pl")
-                .avatar(getResourceAsByteArray("avatars/student.jpg"))//package relative path
                 .build();
 
         User user3 = User.builder()
@@ -99,7 +103,6 @@ public class InitializationData {
                 .birthDate(LocalDate.of(1993, 8, 11))
                 .password("admin")
                 .email("zcvzxcvzxcv@wp.pl")
-                .avatar(getResourceAsByteArray("avatars/prowadzoncy.jpg"))//package relative path
                 .build();
 
         User user4 = User.builder()
@@ -203,7 +206,6 @@ public class InitializationData {
         adService.create(ad7);
         adService.create(ad8);
 
-
-
+        requestContextController.deactivate();
     }
 }

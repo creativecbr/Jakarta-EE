@@ -1,26 +1,24 @@
 package ad.repository;
 
-
 import ad.entity.Ad;
 import category.entity.Category;
-import datastore.DataStore;
+
 import repository.Repository;
 import user.entity.User;
-import utils.CloningUtility;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
+import javax.enterprise.context.RequestScoped;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 /**
  * Repository for character entity. Repositories should be used in business layer (e.g.: in services).
  */
-@Dependent
+@RequestScoped
 public class AdRepository implements Repository<Ad, Long> {
 
 
@@ -58,6 +56,11 @@ public class AdRepository implements Repository<Ad, Long> {
     @Override
     public void update(Ad entity) {
         em.merge(entity);
+    }
+
+    @Override
+    public void detach(Ad entity) {
+        em.detach(entity);
     }
 
     /**
@@ -101,5 +104,6 @@ public class AdRepository implements Repository<Ad, Long> {
         ad.setCategory(category);
         em.persist(ad);
     }
+
 
 }

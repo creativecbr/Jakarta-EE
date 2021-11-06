@@ -6,6 +6,7 @@ import user.repository.UserRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.io.*;
 import java.util.List;
 import java.util.Optional;
@@ -60,6 +61,7 @@ public class UserService {
      *
      * @param user new user to be saved
      */
+    @Transactional
     public void create(User user) {
         repository.create(user);
     }
@@ -69,6 +71,7 @@ public class UserService {
      *
      * @param login of user to delete
      */
+    @Transactional
     public void delete(String login) {
         repository.delete(repository.find(login).orElseThrow());
     }
@@ -78,6 +81,7 @@ public class UserService {
      *
      * @param login of user to delete
      */
+    @Transactional
     public void deleteAvatar(String login) { repository.deleteAvatar(repository.find(login).orElseThrow());}
 
     /**
@@ -85,10 +89,12 @@ public class UserService {
      *
      * @param user user object to update
      */
+    @Transactional
     public void update(User user) {
         repository.update(user);
     }
 
+    @Transactional
     public void updateAvatar(String login, InputStream is) {
         repository.find(login).ifPresent(user -> {
             try {

@@ -12,12 +12,12 @@
         <feature>jpa-2.2</feature>
     </featureManager>
 
-    <dataSource id="PasaAdsDataSource" jndiName="jdbc/PasaAds">
+    <dataSource id="PasaDBDataSource" jndiName="jdbc/PasaDB" type="javax.sql.ConnectionPoolDataSource">
         <jdbcDriver javax.sql.XADataSource="org.h2.jdbcx.JdbcDataSource"
                     javax.sql.ConnectionPoolDataSource="org.h2.jdbcx.JdbcDataSource"
                     javax.sql.DataSource="org.h2.jdbcx.JdbcDataSource"
                     libraryRef="H2JDBCLib"/>
-        <properties URL="jdbc:h2:mem:pasa-ads"/>
+        <properties URL="jdbc:h2:mem:pasaDB;DB_CLOSE_DELAY=-1" user="root" password="root" />
     </dataSource>
 
     <library id="H2JDBCLib">

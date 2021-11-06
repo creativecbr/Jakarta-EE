@@ -19,15 +19,14 @@ import java.io.Serializable;
 @ToString(callSuper = true)
 @EqualsAndHashCode()
 @Entity
-@Table("ads")
-
+@Table(name = "ads")
 public class Ad implements Serializable {
 
     /**
      * Unique Ad's identification number.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     /**

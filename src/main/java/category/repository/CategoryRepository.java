@@ -1,61 +1,73 @@
 package category.repository;
 
 import category.entity.Category;
-import datastore.DataStore;
+
 import repository.Repository;
 
 import javax.enterprise.context.Dependent;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Repository for profession entity. Repositories should be used in business layer (e.g.: in services).
  */
-@Dependent
+@RequestScoped
 public class CategoryRepository implements Repository<Category, String> {
 
     /**
-     * Underlying data store. In future should be replaced with database connection.
+     * Connection with the database (not thread safe).
      */
-    private DataStore store;
+    private EntityManager em;
 
-    /**
-     * @param store data store
-     */
-    @Inject
-    public CategoryRepository(DataStore store) {
-        this.store = store;
+    @PersistenceContext
+    public void setEm(EntityManager em) {
+        this.em = em;
     }
 
 
     @Override
     public Optional<Category> find(String name) {
-        return store.findCategory(name);
+        try {
+            return Optional.of(em.createQuery("select c from Category c where c.name = :name", Category.class)
+                    .setParameter("name", name)
+                    .getSingleResult());
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 
     public Optional<Category> findById(Long id) {
-        return store.findCategory(id);
+        return Optional.ofNullable(em.find(Category.class, id));
     }
 
     @Override
     public List<Category> findAll() {
-        return store.findAllCategories();
+        return em.createQuery("select c from Category c", Category.class).getResultList();
     }
 
     @Override
     public void create(Category entity) {
-        store.createCategory(entity);
+        em.persist(entity);
     }
 
     @Override
     public void delete(Category entity) {
-        store.deleteCategory(entity.getName());
+        em.remove(em.find(Category.class, entity.getId()));
     }
 
     @Override
     public void update(Category entity) {
-        store.updateCategory(entity);
+        em.merge(entity);
+    }
+
+    @Override
+    public void detach(Category entity) {
+        em.detach(entity);
     }
 
 }

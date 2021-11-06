@@ -41,6 +41,14 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+            <scope>runtime</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -82,6 +90,7 @@
                                             <groupId>com.h2database</groupId>
                                             <artifactId>h2</artifactId>
                                             <version>1.4.200</version>
+                                            <type>jar</type>
                                             <outputDirectory>
                                                 ${project.build.directory}/liberty/wlp/usr/shared/resources
                                             </outputDirectory>

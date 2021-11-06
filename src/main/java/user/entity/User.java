@@ -4,6 +4,7 @@ import ad.entity.Ad;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -18,11 +19,14 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode
+@Entity
+@Table(name = "users")
 public class User implements Serializable {
 
     /**
      * User's login.
      */
+    @Id
     private String login;
 
     /**
@@ -38,6 +42,7 @@ public class User implements Serializable {
     /**
      * User's birth date.
      */
+    @Column(name = "birth_date")
     private LocalDate birthDate;
 
     /**
@@ -49,6 +54,7 @@ public class User implements Serializable {
     /**
      * User's contact email.
      */
+    @Column(nullable = false, unique = true)
     private String email;
 
     /**
@@ -61,12 +67,15 @@ public class User implements Serializable {
      */
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Ad> ads;
 
 
     /**
      * User's avatar.
      */
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private byte[] avatar;

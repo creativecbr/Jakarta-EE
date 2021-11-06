@@ -8,13 +8,20 @@ Serverlet with context and dependency injections.
 PASA app provides a simple purchase service that enables selling and buying thousand of items in several categories.
 ## Build and run
 
-Firstly, clean your repository
+**Firstly**, clean your repository
 
 ```bash
-mvn clean package
+mvn clean 
 ```
 
-Secondly, to run app using Open Liberty Application put:
+**Secondly**, pull all dependency for open liberty
+
+```bash
+mvn -P liberty package
+```
+
+
+**Thirdly**, to run app using Open Liberty Application put:
 
 ```bash
 mvn -P liberty liberty:dev

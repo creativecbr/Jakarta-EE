@@ -17,16 +17,21 @@ import java.util.Set;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode
+@Entity
+@Table(name = "categories")
 public class Category implements Serializable {
 
     /**
      * Unique id of category.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     /**
      * Name of category.
      */
+    @Column(nullable = false, unique = true)
     private String name;
 
     /**

@@ -6,11 +6,15 @@ GET http://localhost:9080/PASA/api/categories/Motoryzacja
 
 ###
 
+DELETE http://localhost:9080/PASA/api/categories/Motoryzacja
+
+###
+
 GET http://localhost:9080/PASA/api/ads
 
 ###
 
-GET http://localhost:9080/PASA/api/ads/3
+GET http://localhost:9080/PASA/api/ads/5
 
 ### tu
 
@@ -18,11 +22,11 @@ GET http://localhost:9080/PASA/api/categories/Motoryzacja/ads
 
 ###
 
-GET http://localhost:9080/PASA/api/categories/Motoryzacja/ads/3
+GET http://localhost:9080/PASA/api/categories/Motoryzacja/ads/6
 
 ###
 
-GET http://localhost:9080/PASA/api/categories/Motoryzacja/ads/2
+GET http://localhost:9080/PASA/api/categories/Motoryzacja/ads/8
 
 ###
 
@@ -37,11 +41,19 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:9080/PASA/api/categories/Motoryzacja/ads/2
+GET http://localhost:9080/PASA/api/categories
 
 ###
 
 GET http://localhost:9080/PASA/api/categories/Zabawki
+
+###
+
+DELETE http://localhost:9080/PASA/api/categories/Motoryzacja/ads/8
+
+###
+
+GET http://localhost:9080/PASA/api/categories/Motoryzacja/ads
 
 ###
 

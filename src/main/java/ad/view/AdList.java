@@ -62,14 +62,6 @@ public class AdList implements Serializable {
         }
     }
 
-    // moze TODO zeby jak nie ma category name to wszystkie?
-//
-//    /**
-//     * In order to prevent calling service on different steps of JSF request lifecycle, model property is cached using
-//     * lazy getter.
-//     *
-//     * @return all ads
-//     */
 
     public AdsModel getAds() {
         if (ads == null) {

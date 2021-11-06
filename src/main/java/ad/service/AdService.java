@@ -10,6 +10,7 @@ import user.repository.UserRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -48,21 +49,35 @@ public class AdService {
         this.categoryRepository = categoryRepository;
     }
 
-
     /**
      * Creates new ad.
      *
      * @param ad new ad
      */
+    @Transactional
     public void create(Ad ad) {
+
         adRepository.create(ad);
+        userRepository.find(ad.getUser().getLogin()).ifPresent(user -> user.getAds().add(ad));
     }
 
-    public void update(Ad ad) {
+    @Transactional
+    public void update(Ad ad){
+
+        Ad original = adRepository.find(ad.getId()).orElseThrow();
+            adRepository.detach(original);
+            if (!original.getUser().getLogin().equals(ad.getUser().getLogin())) {
+            original.getUser().getAds().removeIf(adToRemove -> adToRemove.getId().equals(ad.getId()));
+            userRepository.find(ad.getUser().getLogin()).ifPresent(user -> user.getAds().add(ad));
+        }
         adRepository.update(ad);
     }
 
+    @Transactional
     public void delete(Long id) {
+
+        Ad ad = adRepository.find(id).orElseThrow();
+        userRepository.find(ad.getUser().getLogin()).get().getAds().remove(ad);
         adRepository.delete(adRepository.find(id).orElseThrow());
     }
 
@@ -81,7 +96,7 @@ public class AdService {
 
     public Optional<Ad> find(Long id, String login) {
 
-        Optional<User> user = userRepository.findByLogin(login);
+        Optional<User> user = userRepository.find(login);
         if (user.isPresent()) {
             return adRepository.findByIdAndUser(id, user.get());
         } else {
@@ -107,6 +122,7 @@ public class AdService {
         }
     }
 
+    @Transactional
     public void createWithCategory(Ad ad, Category category){
         adRepository.createWithSpecifiedCategory(ad, category);
     }

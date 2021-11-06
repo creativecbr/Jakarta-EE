@@ -1,5 +1,7 @@
 package category.service;
 
+import ad.entity.Ad;
+import ad.repository.AdRepository;
 import category.entity.Category;
 import category.repository.CategoryRepository;
 import lombok.NoArgsConstructor;
@@ -7,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.naming.OperationNotSupportedException;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,23 +25,34 @@ public class CategoryService {
      */
     private CategoryRepository categoryRepository;
 
+    private AdRepository adRepository;
+
     /**
      * @param repository repository for category entity
      */
     @Inject
-    public CategoryService(CategoryRepository repository){ this.categoryRepository = repository; }
+    public CategoryService(CategoryRepository repository, AdRepository adRepository){ this.categoryRepository = repository; this.adRepository = adRepository; }
 
 
+    @Transactional
     public void create(Category category) {
             categoryRepository.create(category);
          }
 
 
-    public void delete(String name)  {
-           categoryRepository.delete(categoryRepository.find(name).orElseThrow());
+    @Transactional
+    public void delete(String name) {
+
+        List<Ad> adsToRemove = adRepository.findAllByCategory(categoryRepository.find(name).orElseThrow());
+        for (Ad ad: adsToRemove) {
+            adRepository.delete(ad);
         }
+        categoryRepository.delete(categoryRepository.find(name).orElseThrow());
+
+    }
 
 
+    @Transactional
     public void update(Category category) {
          categoryRepository.update(category);
     }
